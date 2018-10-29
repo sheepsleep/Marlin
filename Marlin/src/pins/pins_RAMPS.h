@@ -77,13 +77,13 @@
 //
 // Limit Switches
 //
-#define X_MIN_PIN           3
+#define X_MIN_PIN          15
 #ifndef X_MAX_PIN
   #define X_MAX_PIN         2
 #endif
-#define Y_MIN_PIN          14
+#define Y_MIN_PIN          18
 #define Y_MAX_PIN          15
-#define Z_MIN_PIN          18
+#define Z_MIN_PIN          19
 #define Z_MAX_PIN          19
 
 //
@@ -100,7 +100,7 @@
 #define X_DIR_PIN          55
 #define X_ENABLE_PIN       38
 #ifndef X_CS_PIN
-  #define X_CS_PIN         53
+  #define X_CS_PIN         40
 #endif
 
 #define Y_STEP_PIN         60
@@ -246,7 +246,7 @@
 #define HEATER_0_PIN       RAMPS_D10_PIN
 
 #if ENABLED(IS_RAMPS_EFB)                      // Hotend, Fan, Bed
-  #define HEATER_BED_PIN   RAMPS_D8_PIN
+  #define HEATER_BED_PIN   57
 #elif ENABLED(IS_RAMPS_EEF)                    // Hotend, Hotend, Fan
   #define HEATER_1_PIN     RAMPS_D9_PIN
 #elif ENABLED(IS_RAMPS_EEB)                    // Hotend, Hotend, Bed
@@ -265,7 +265,7 @@
 
 #ifndef FAN_PIN
   #if ENABLED(IS_RAMPS_EFB) || ENABLED(IS_RAMPS_EFF)  // Hotend, Fan, Bed or Hotend, Fan, Fan
-    #define FAN_PIN        RAMPS_D9_PIN
+    #define FAN_PIN         6
   #elif ENABLED(IS_RAMPS_EEF) || ENABLED(IS_RAMPS_SF) // Hotend, Hotend, Fan or Spindle, Fan
     #define FAN_PIN        RAMPS_D8_PIN
   #elif ENABLED(IS_RAMPS_EEB)                         // Hotend, Hotend, Bed
