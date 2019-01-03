@@ -295,6 +295,10 @@ void test_tmc_connection(const bool test_x, const bool test_y, const bool test_z
 
   bool tmc_enable_stallguard(TMC2660Stepper);
   void tmc_disable_stallguard(TMC2660Stepper, const bool);
+
+  #if ENABLED(SPI_ENDSTOPS)
+    bool test_axis_stall_status(const AxisEnum axis);
+  #endif
 #endif
 
 #if TMC_HAS_SPI

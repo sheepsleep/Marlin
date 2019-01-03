@@ -76,6 +76,10 @@ Endstops::esbits_t Endstops::live_state = 0;
   float Endstops::z3_endstop_adj;
 #endif
 
+#if ENABLED(SPI_ENDSTOPS)
+  Endstops::tmc_spi_homing_t Endstops::tmc_spi_homing = { false, false, false };
+#endif
+
 /**
  * Class and Instance Methods
  */
@@ -532,6 +536,12 @@ void Endstops::update() {
     #else
       UPDATE_ENDSTOP_BIT(X, MIN);
     #endif
+  #elif X_SPI_SENSORLESS && X_HOME_DIR == -1
+    if (endstops.tmc_spi_homing.x) {
+      WRITE(X_CS_PIN, LOW);
+      SET_BIT_TO(live_state, X_MIN, test_axis_stall_status(X_AXIS));
+      WRITE(X_CS_PIN, HIGH);
+    }
   #endif
 
   #if HAS_X_MAX
@@ -545,6 +555,12 @@ void Endstops::update() {
     #else
       UPDATE_ENDSTOP_BIT(X, MAX);
     #endif
+  #elif X_SPI_SENSORLESS && X_HOME_DIR == 1
+    if (endstops.tmc_spi_homing.x) {
+      WRITE(X_CS_PIN, LOW);
+      SET_BIT_TO(live_state, X_MAX, test_axis_stall_status(X_AXIS));
+      WRITE(X_CS_PIN, HIGH);
+    }
   #endif
 
   #if HAS_Y_MIN
@@ -558,6 +574,12 @@ void Endstops::update() {
     #else
       UPDATE_ENDSTOP_BIT(Y, MIN);
     #endif
+  #elif Y_SPI_SENSORLESS && Y_HOME_DIR == -1
+    if (endstops.tmc_spi_homing.y) {
+      WRITE(Y_CS_PIN, LOW);
+      SET_BIT_TO(live_state, Y_MIN, test_axis_stall_status(Y_AXIS));
+      WRITE(Y_CS_PIN, HIGH);
+    }
   #endif
 
   #if HAS_Y_MAX
@@ -571,6 +593,12 @@ void Endstops::update() {
     #else
       UPDATE_ENDSTOP_BIT(Y, MAX);
     #endif
+  #elif Y_SPI_SENSORLESS && Y_HOME_DIR == 1
+    if (endstops.tmc_spi_homing.y) {
+      WRITE(Y_CS_PIN, LOW);
+      SET_BIT_TO(live_state, Y_MAX, test_axis_stall_status(Y_AXIS));
+      WRITE(Y_CS_PIN, HIGH);
+    }
   #endif
 
   #if HAS_Z_MIN
@@ -699,7 +727,7 @@ void Endstops::update() {
   // Now, we must signal, after validation, if an endstop limit is pressed or not
   if (stepper.axis_is_moving(X_AXIS)) {
     if (stepper.motor_direction(X_AXIS_HEAD)) { // -direction
-      #if HAS_X_MIN
+      #if HAS_X_MIN || (X_SPI_SENSORLESS && X_HOME_DIR == -1)
         #if ENABLED(X_DUAL_ENDSTOPS)
           PROCESS_DUAL_ENDSTOP(X, X2, MIN);
         #else
@@ -708,7 +736,7 @@ void Endstops::update() {
       #endif
     }
     else { // +direction
-      #if HAS_X_MAX
+      #if HAS_X_MAX || (X_SPI_SENSORLESS && X_HOME_DIR == 1)
         #if ENABLED(X_DUAL_ENDSTOPS)
           PROCESS_DUAL_ENDSTOP(X, X2, MAX);
         #else
@@ -720,7 +748,7 @@ void Endstops::update() {
 
   if (stepper.axis_is_moving(Y_AXIS)) {
     if (stepper.motor_direction(Y_AXIS_HEAD)) { // -direction
-      #if HAS_Y_MIN
+      #if HAS_Y_MIN || (Y_SPI_SENSORLESS && Y_HOME_DIR == -1)
         #if ENABLED(Y_DUAL_ENDSTOPS)
           PROCESS_DUAL_ENDSTOP(Y, Y2, MIN);
         #else
@@ -729,7 +757,7 @@ void Endstops::update() {
       #endif
     }
     else { // +direction
-      #if HAS_Y_MAX
+      #if HAS_Y_MAX || (Y_SPI_SENSORLESS && Y_HOME_DIR == 1)
         #if ENABLED(Y_DUAL_ENDSTOPS)
           PROCESS_DUAL_ENDSTOP(Y, Y2, MAX);
         #else

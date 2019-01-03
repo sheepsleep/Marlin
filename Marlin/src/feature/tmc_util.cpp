@@ -975,6 +975,26 @@
   }
   void tmc_disable_stallguard(TMC2660Stepper, const bool) {};
 
+  #if ENABLED(SPI_ENDSTOPS)
+    bool test_axis_stall_status(const AxisEnum axis) {
+      uint16_t sg_result = 0;
+
+      SPI.beginTransaction(SPISettings(16000000/8, MSBFIRST, SPI_MODE3));
+      // Read DRV_STATUS
+      SPI.transfer(TMC2130_n::DRV_STATUS_t::address);
+      SPI.transfer(0);
+      SPI.transfer(0);
+      // We only care about the last 10 bits
+      sg_result = SPI.transfer(0);
+      sg_result <<= 8;
+      sg_result |= SPI.transfer(0);
+      sg_result &= 0x3FF;
+      SPI.endTransaction();
+
+      if (sg_result == 0) return true;
+      else return false;
+    }
+  #endif
 #endif // USE_SENSORLESS
 
 #if TMC_HAS_SPI
