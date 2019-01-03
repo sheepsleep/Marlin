@@ -172,6 +172,10 @@ class Endstops {
       static void monitor();
       static void run_monitor();
     #endif
+
+    #if ENABLED(SPI_ENDSTOPS)
+      static struct tmc_spi_homing_t { bool x, y, z; } tmc_spi_homing;
+    #endif
 };
 
 extern Endstops endstops;
