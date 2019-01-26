@@ -43,12 +43,12 @@
 //
 // Limit Switches
 //
-#define X_MIN_PIN          31
-#define X_MAX_PIN          30
-#define Y_MIN_PIN          12
-#define Y_MAX_PIN          11
+#define X_MIN_PIN          -1 // 31
+#define X_MAX_PIN          -1 // 30
+#define Y_MIN_PIN          -1 // 12
+#define Y_MAX_PIN          -1 // 11
 #define Z_MIN_PIN          29
-#define Z_MAX_PIN          28
+#define Z_MAX_PIN          -1 // 28
 
 //
 // Steppers
@@ -57,14 +57,14 @@
 #define X_DIR_PIN          34
 #define X_ENABLE_PIN       37
 #ifndef X_CS_PIN
-  #define X_CS_PIN         18
+  #define X_CS_PIN         30
 #endif
 
 #define Y_STEP_PIN         22
 #define Y_DIR_PIN          23
 #define Y_ENABLE_PIN       33
 #ifndef Y_CS_PIN
-  #define Y_CS_PIN         19
+  #define Y_CS_PIN         12
 #endif
 
 #define Z_STEP_PIN         25
@@ -78,7 +78,7 @@
 #define E0_DIR_PIN         46
 #define E0_ENABLE_PIN      48
 #ifndef E0_CS_PIN
-  #define E0_CS_PIN        17
+  #define E0_CS_PIN        31
 #endif
 
 #define E1_STEP_PIN        44
@@ -95,12 +95,15 @@
   #define E2_CS_PIN        -1
 #endif
 
-#define E3_STEP_PIN        39
-#define E3_DIR_PIN         38
-#define E3_ENABLE_PIN      40
-#ifndef E3_CS_PIN
-  #define E3_CS_PIN        -1
+#define Z2_STEP_PIN        39
+#define Z2_DIR_PIN         38
+#define Z2_ENABLE_PIN      40
+#ifndef Z2_CS_PIN
+  #define Z2_CS_PIN        -1
 #endif
+
+#define Z_HARDWARE_SERIAL  Serial1
+#define Z2_HARDWARE_SERIAL Serial2
 
 //
 // Temperature Sensors
@@ -114,11 +117,11 @@
 //
 // Heaters / Fans
 //
-#define HEATER_0_PIN        3
+#define HEATER_0_PIN        2 // 3
 #define HEATER_1_PIN        8
 #define HEATER_2_PIN        7
 #define HEATER_3_PIN        9
-#define HEATER_BED_PIN      2
+#define HEATER_BED_PIN      HEATER_2_PIN // 2
 
 #ifndef FAN_PIN
   #define FAN_PIN           6
@@ -153,6 +156,10 @@
 #define MAX31855_SS3       51
 
 #define ENC424_SS          61
+
+#define SCK_PIN            76
+#define MISO_PIN           74
+#define MOSI_PIN           75
 
 //
 // LCD / Controller
