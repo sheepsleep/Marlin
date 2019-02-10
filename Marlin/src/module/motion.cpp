@@ -1130,6 +1130,8 @@ float get_homing_bump_feedrate(const AxisEnum axis) {
       }
     #endif
 
+    sg_guard_period = millis() + default_sg_guard_duration;
+
     return stealth_states;
   }
 

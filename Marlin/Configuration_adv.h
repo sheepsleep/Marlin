@@ -1742,6 +1742,9 @@
    * Too low values can lead to false positives, while too high values will collide the axis without triggering.
    * It is advised to set X/Y/Z_HOME_BUMP_MM to 0.
    * M914 X/Y/Z to live tune the setting
+   *
+   * IMPROVE_HOMING_RELIABILITY tunes your acceleration and jerk profile when homing
+   * and adds a guard period for endstop triggering.
    */
   //#define SENSORLESS_HOMING // TMC2130 only
 
@@ -1757,6 +1760,9 @@
     #define X_STALL_SENSITIVITY  8
     #define Y_STALL_SENSITIVITY  8
     //#define Z_STALL_SENSITIVITY  8
+
+    #define IMPROVE_HOMING_RELIABILITY
+
   #endif
 
   /**
