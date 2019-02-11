@@ -417,6 +417,11 @@ void GcodeSuite::G28(const bool always_home_all) {
 
   endstops.not_homing();
 
+  // Clear endstop state for polled stallGuard endstops
+  #if ENABLED(SPI_ENDSTOPS)
+    endstops.clear_endstop_state();
+  #endif
+
   #if ENABLED(DELTA) && ENABLED(DELTA_HOME_TO_SAFE_ZONE)
     // move to a height where we can use the full xy-area
     do_blocking_move_to_z(delta_clip_start_height);
