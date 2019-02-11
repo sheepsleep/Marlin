@@ -477,6 +477,10 @@ void Endstops::update() {
     if (!abort_enabled()) return;
   #endif
 
+  #if ENABLED(IMPROVE_HOMING_RELIABILITY) // With SENSORLESS_HOMING or SENSORLESS_PROBING
+    millis_t ms = millis();
+  #endif
+
   #define UPDATE_ENDSTOP_BIT(AXIS, MINMAX) SET_BIT_TO(live_state, _ENDSTOP(AXIS, MINMAX), (READ(_ENDSTOP_PIN(AXIS, MINMAX)) != _ENDSTOP_INVERTING(AXIS, MINMAX)))
   #define COPY_LIVE_STATE(SRC_BIT, DST_BIT) SET_BIT_TO(live_state, DST_BIT, TEST(live_state, SRC_BIT))
 
@@ -527,7 +531,7 @@ void Endstops::update() {
       UPDATE_ENDSTOP_BIT(X, MIN);
     #endif
   #elif X_SPI_SENSORLESS && X_HOME_DIR == -1
-    if (endstops.tmc_spi_homing.x) {
+    if (endstops.tmc_spi_homing.x && ELAPSED(ms, sg_guard_period)) {
       WRITE(X_CS_PIN, LOW);
       SET_BIT_TO(live_state, X_MIN, test_axis_stall_status(X_AXIS));
       WRITE(X_CS_PIN, HIGH);
@@ -546,7 +550,7 @@ void Endstops::update() {
       UPDATE_ENDSTOP_BIT(X, MAX);
     #endif
   #elif X_SPI_SENSORLESS && X_HOME_DIR == 1
-    if (endstops.tmc_spi_homing.x) {
+    if (endstops.tmc_spi_homing.x && ELAPSED(ms, sg_guard_period)) {
       WRITE(X_CS_PIN, LOW);
       SET_BIT_TO(live_state, X_MAX, test_axis_stall_status(X_AXIS));
       WRITE(X_CS_PIN, HIGH);
@@ -565,7 +569,7 @@ void Endstops::update() {
       UPDATE_ENDSTOP_BIT(Y, MIN);
     #endif
   #elif Y_SPI_SENSORLESS && Y_HOME_DIR == -1
-    if (endstops.tmc_spi_homing.y) {
+    if (endstops.tmc_spi_homing.y && ELAPSED(ms, sg_guard_period)) {
       WRITE(Y_CS_PIN, LOW);
       SET_BIT_TO(live_state, Y_MIN, test_axis_stall_status(Y_AXIS));
       WRITE(Y_CS_PIN, HIGH);
@@ -584,7 +588,7 @@ void Endstops::update() {
       UPDATE_ENDSTOP_BIT(Y, MAX);
     #endif
   #elif Y_SPI_SENSORLESS && Y_HOME_DIR == 1
-    if (endstops.tmc_spi_homing.y) {
+    if (endstops.tmc_spi_homing.y && ELAPSED(ms, sg_guard_period)) {
       WRITE(Y_CS_PIN, LOW);
       SET_BIT_TO(live_state, Y_MAX, test_axis_stall_status(Y_AXIS));
       WRITE(Y_CS_PIN, HIGH);
