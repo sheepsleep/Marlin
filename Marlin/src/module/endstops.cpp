@@ -806,6 +806,35 @@ void Endstops::update() {
   }
 } // Endstops::update()
 
+#if ENABLED(SPI_ENDSTOPS)
+  void Endstops::clear_endstop_state() {
+    #if X_SPI_SENSORLESS
+      #if X_HOME_DIR == -1
+        SET_BIT_TO(live_state, X_MIN, false);
+      #endif
+      #if X_HOME_DIR == 1
+        SET_BIT_TO(live_state, X_MAX, false);
+      #endif
+    #endif
+    #if Y_SPI_SENSORLESS
+      #if Y_HOME_DIR == -1
+        SET_BIT_TO(live_state, Y_MIN, false);
+      #endif
+      #if Y_HOME_DIR == 1
+        SET_BIT_TO(live_state, Y_MAX, false);
+      #endif
+    #endif
+    #if 0 //Z_SPI_SENSORLESS // Needs test hardware
+      #if Z_HOME_DIR == -1
+        SET_BIT_TO(live_state, Z_MIN, false);
+      #endif
+      #if Z_HOME_DIR == 1
+        SET_BIT_TO(live_state, Z_MAX, false);
+      #endif
+    #endif
+  }
+#endif
+
 #if ENABLED(PINS_DEBUGGING)
 
   bool Endstops::monitor_flag = false;
