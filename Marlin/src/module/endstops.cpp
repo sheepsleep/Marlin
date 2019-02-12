@@ -542,9 +542,7 @@ void Endstops::update() {
     #endif
   #elif X_SPI_SENSORLESS && X_HOME_DIR == -1
     if (endstops.tmc_spi_homing.x && ELAPSED(ms, sg_guard_period)) {
-      WRITE(X_CS_PIN, LOW);
-      SET_BIT_TO(live_state, X_MIN, test_axis_stall_status(X_AXIS));
-      WRITE(X_CS_PIN, HIGH);
+      SET_BIT_TO(live_state, X_MIN, stepperX.test_stall_status());
     }
   #endif
 
@@ -561,9 +559,7 @@ void Endstops::update() {
     #endif
   #elif X_SPI_SENSORLESS && X_HOME_DIR == 1
     if (endstops.tmc_spi_homing.x && ELAPSED(ms, sg_guard_period)) {
-      WRITE(X_CS_PIN, LOW);
-      SET_BIT_TO(live_state, X_MAX, test_axis_stall_status(X_AXIS));
-      WRITE(X_CS_PIN, HIGH);
+      SET_BIT_TO(live_state, X_MAX, stepperX.test_stall_status());
     }
   #endif
 
@@ -580,9 +576,7 @@ void Endstops::update() {
     #endif
   #elif Y_SPI_SENSORLESS && Y_HOME_DIR == -1
     if (endstops.tmc_spi_homing.y && ELAPSED(ms, sg_guard_period)) {
-      WRITE(Y_CS_PIN, LOW);
-      SET_BIT_TO(live_state, Y_MIN, test_axis_stall_status(Y_AXIS));
-      WRITE(Y_CS_PIN, HIGH);
+      SET_BIT_TO(live_state, Y_MIN, stepperY.test_stall_status());
     }
   #endif
 
@@ -599,9 +593,7 @@ void Endstops::update() {
     #endif
   #elif Y_SPI_SENSORLESS && Y_HOME_DIR == 1
     if (endstops.tmc_spi_homing.y && ELAPSED(ms, sg_guard_period)) {
-      WRITE(Y_CS_PIN, LOW);
-      SET_BIT_TO(live_state, Y_MAX, test_axis_stall_status(Y_AXIS));
-      WRITE(Y_CS_PIN, HIGH);
+      SET_BIT_TO(live_state, Y_MAX, stepperY.test_stall_status());
     }
   #endif
 
